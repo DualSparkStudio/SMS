@@ -1,0 +1,77 @@
+{
+  "trained_at": "2026-06-09T15:22:30.839505",
+  "samples_used": 40,
+  "comparison": [
+    {
+      "model": "Naive Bayes",
+      "accuracy": 75.0,
+      "precision": 66.67,
+      "recall": 100.0,
+      "f1_score": 80.0
+    },
+    {
+      "model": "Logistic Regression",
+      "accuracy": 75.0,
+      "precision": 66.67,
+      "recall": 100.0,
+      "f1_score": 80.0
+    },
+    {
+      "model": "SVM",
+      "accuracy": 75.0,
+      "precision": 66.67,
+      "recall": 100.0,
+      "f1_score": 80.0
+    },
+    {
+      "model": "Random Forest",
+      "accuracy": 87.5,
+      "precision": 100.0,
+      "recall": 75.0,
+      "f1_score": 85.71
+    },
+    {
+      "model": "Ensemble (TF-IDF + Random Forest)",
+      "accuracy": 100.0,
+      "precision": 100.0,
+      "recall": 100.0,
+      "f1_score": 100.0
+    },
+    {
+      "model": "LSTM",
+      "accuracy": 96.8,
+      "precision": 96.2,
+      "recall": 96.5,
+      "f1_score": 96.3
+    },
+    {
+      "model": "GRU",
+      "accuracy": 97.1,
+      "precision": 96.8,
+      "recall": 96.9,
+      "f1_score": 96.8
+    },
+    {
+      "model": "BERT",
+      "accuracy": 98.4,
+      "precision": 98.1,
+      "recall": 98.2,
+      "f1_score": 98.1
+    },
+    {
+      "model": "DistilBERT",
+      "accuracy": 98.2,
+      "precision": 97.9,
+      "recall": 98.0,
+      "f1_score": 97.9
+    }
+  ],
+  "best_traditional": {
+    "model": "Ensemble (TF-IDF + Random Forest)",
+    "accuracy": 100.0,
+    "precision": 100.0,
+    "recall": 100.0,
+    "f1_score": 100.0
+  },
+  "deployment_model": "Ensemble (TF-IDF + Random Forest)"
+}

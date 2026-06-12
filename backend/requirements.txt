@@ -1,0 +1,27 @@
+Django>=4.2,<5.1
+djangorestframework>=3.14
+djangorestframework-simplejwt>=5.3
+django-cors-headers>=4.3
+python-dotenv>=1.0
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+nltk>=3.8
+langdetect>=1.0.9
+deep-translator>=1.11
+joblib>=1.3
+gunicorn>=21.2
+requests>=2.31
+tldextract>=5.1
+scipy>=1.11
+google-generativeai>=0.8.0
+openai>=1.30.0
+
+# Optional - install separately if needed for deep learning experiments
+# tensorflow>=2.15
+# torch>=2.1
+# transformers>=4.36
+# mysqlclient>=2.2
+# shap>=0.44
+# lime>=0.2
+# spacy>=3.7
