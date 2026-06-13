@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { chatAPI } from '../api/client'
+import VoiceButton from '../components/VoiceButton'
+import { speakText, isSpeechSynthesisSupported } from '../hooks/useSpeechRecognition'
 
 const SUGGESTIONS = [
   'Why is this SMS dangerous?',
@@ -25,6 +27,8 @@ export default function Assistant() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [llmStatus, setLlmStatus] = useState(null)
+  const [isListening, setIsListening] = useState(false)
+  const [autoSpeak, setAutoSpeak] = useState(false)
   const chatEnd = useRef(null)
 
   useEffect(() => {
@@ -73,6 +77,9 @@ export default function Assistant() {
           provider: data.provider || (data.llm_enabled ? 'llm' : 'fallback'),
         },
       ])
+      if (autoSpeak) {
+        speakText(formatReply(data.reply))
+      }
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -91,7 +98,7 @@ export default function Assistant() {
             <div className="mb-4">
               <h2 className="page-title mb-1">AI Security Assistant</h2>
               <p className="page-subtitle mb-0">
-                {smsId ? 'Context-aware chat about your analyzed SMS.' : 'Ask anything about SMS security.'}
+                {smsId ? 'Context-aware chat about your analyzed SMS.' : 'Ask anything about SMS security — type or use voice.'}
               </p>
             </div>
 
@@ -110,6 +117,16 @@ export default function Assistant() {
                 {messages.map((m, i) => (
                   <div key={i} className={`chat-bubble ${m.role}`}>
                     {m.text}
+                    {m.role === 'assistant' && isSpeechSynthesisSupported() && (
+                      <button
+                        type="button"
+                        className="speak-btn"
+                        onClick={() => speakText(m.text)}
+                        title="Listen to response"
+                      >
+                        🔊 Listen
+                      </button>
+                    )}
                   </div>
                 ))}
                 {loading && (
@@ -136,19 +153,43 @@ export default function Assistant() {
                 </div>
                 <form
                   onSubmit={(e) => { e.preventDefault(); sendMessage(input) }}
-                  className="d-flex gap-2"
                 >
-                  <input
-                    className="form-control form-control-hsds"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask anything about SMS security..."
-                    disabled={loading}
-                    autoComplete="off"
-                  />
-                  <button type="submit" className="btn btn-hsds" disabled={loading || !input.trim()}>
-                    {loading ? '...' : 'Send'}
-                  </button>
+                  <div className="input-with-voice mb-2">
+                    <input
+                      className="form-control form-control-hsds"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder="Type or use voice to ask about SMS security..."
+                      disabled={loading}
+                      autoComplete="off"
+                    />
+                    <button type="submit" className="btn btn-hsds" disabled={loading || !input.trim()}>
+                      {loading ? '...' : 'Send'}
+                    </button>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <VoiceButton
+                      onTranscript={setInput}
+                      getBaseText={() => input}
+                      disabled={loading}
+                      size="sm"
+                      onListeningChange={setIsListening}
+                    />
+                    {isListening && (
+                      <small className="voice-listening-hint">🎙️ Listening — speak your question</small>
+                    )}
+                    {isSpeechSynthesisSupported() && (
+                      <label className="small text-muted mb-0 ms-auto">
+                        <input
+                          type="checkbox"
+                          className="form-check-input me-1"
+                          checked={autoSpeak}
+                          onChange={(e) => setAutoSpeak(e.target.checked)}
+                        />
+                        Auto-read AI replies aloud
+                      </label>
+                    )}
+                  </div>
                 </form>
               </div>
             </div>

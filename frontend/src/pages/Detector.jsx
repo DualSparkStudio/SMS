@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { smsAPI } from '../api/client'
+import VoiceButton from '../components/VoiceButton'
 
 const ANALYSIS_STEPS = [
   'Detecting language...',
@@ -25,6 +26,7 @@ export default function Detector() {
   const [progress, setProgress] = useState(0)
   const [stepIndex, setStepIndex] = useState(0)
   const [error, setError] = useState('')
+  const [isListening, setIsListening] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -79,23 +81,37 @@ export default function Detector() {
           <div className="col-lg-8">
             <h2 className="page-title text-center">SMS Security Analyzer</h2>
             <p className="page-subtitle text-center">
-              Enter an SMS message to analyze using TextGuard.
+              Enter or speak an SMS message to analyze using TextGuard.
               Supports English, Hindi, and Marathi.
             </p>
 
             <div className="card card-hsds p-4">
               <form onSubmit={handleAnalyze}>
                 <div className="mb-3">
-                  <label className="form-label">SMS Message</label>
+                  <div className="label-with-voice">
+                    <label className="form-label mb-0">SMS Message</label>
+                    <VoiceButton
+                      onTranscript={setMessage}
+                      getBaseText={() => message}
+                      disabled={loading}
+                      onListeningChange={setIsListening}
+                    />
+                  </div>
                   <textarea
                     className="form-control form-control-hsds"
                     rows={5}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Paste or type the SMS message here..."
+                    placeholder="Paste, type, or use voice to dictate the SMS message..."
                     maxLength={5000}
+                    disabled={loading}
                   />
-                  <small className="text-muted">{message.length}/5000 characters</small>
+                  <div className="d-flex justify-content-between align-items-center mt-1">
+                    <small className="text-muted">{message.length}/5000 characters</small>
+                    {isListening && (
+                      <small className="voice-listening-hint">🎙️ Speak now — your words appear above</small>
+                    )}
+                  </div>
                 </div>
 
                 {error && <div className="alert alert-danger">{error}</div>}
