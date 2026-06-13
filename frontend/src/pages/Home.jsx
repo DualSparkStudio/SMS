@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const features = [
   { icon: '🔍', title: 'SMS Analysis', desc: 'Detect spam/ham with confidence scores and suspicious word identification.' },
-  { icon: '🧠', title: 'Explainable AI', desc: 'SHAP + LIME hybrid explanations showing word-level impact on predictions.' },
+  { icon: '🧠', title: 'Explainable AI', desc: 'Word-level explanations showing why a message was flagged.' },
   { icon: '🔗', title: 'Phishing Detection', desc: 'Analyze URLs for domain spoofing, suspicious TLDs, and fake login pages.' },
   { icon: '⚠️', title: 'Fraud Detection', desc: 'Identify banking fraud, lottery scams, fake jobs, and investment fraud.' },
   { icon: '🌐', title: 'Multilingual', desc: 'Support for English, Hindi, and Marathi with automatic language detection.' },
